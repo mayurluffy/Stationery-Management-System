@@ -1,0 +1,274 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Stationery Management{% endblock %}</title>
+    {% load static %}
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f5f6fc;
+            color: #292548;
+        }
+
+        header {
+            padding: 20px 5%;
+            background: linear-gradient(120deg, #5142a8, #8069dd);
+            color: white;
+            box-shadow: 0 5px 20px #40308025;
+        }
+
+        header h2 {
+            margin: 0 0 16px;
+        }
+
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 14px;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background .2s;
+        }
+
+        nav a:hover {
+            background: #ffffff25;
+        }
+
+        main {
+            max-width: 1400px;
+            width: 92%;
+            margin: 30px auto;
+        }
+
+        .pretty-dashboard {
+            padding: 10px 0 40px;
+        }
+
+        .pretty-hero {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 35px;
+            margin-bottom: 28px;
+            border-radius: 24px;
+            background: linear-gradient(120deg, #e8e5ff, #f8e8ff, #e1f3ff);
+        }
+
+        .pretty-label {
+            color: #7653c6;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .pretty-hero h1 {
+            font-size: clamp(26px, 4vw, 38px);
+            margin: 12px 0;
+        }
+
+        .pretty-hero p {
+            color: #77718e;
+        }
+
+        .pretty-add {
+            background: #6554c0;
+            color: white;
+            padding: 14px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .pretty-stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .pretty-card {
+            padding: 25px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px #32285a12;
+            border: 1px solid #eeedf5;
+            transition: transform .2s;
+        }
+
+        .pretty-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .pretty-icon {
+            font-size: 25px;
+            margin-bottom: 18px;
+        }
+
+        .pretty-card p {
+            color: #77738a;
+        }
+
+        .pretty-card h2 {
+            font-size: 27px;
+            overflow-wrap: anywhere;
+        }
+
+        .pretty-card small {
+            color: #8b879e;
+        }
+
+        .card-purple { border-top: 5px solid #9276eb; }
+        .card-purple h2 { color: #7051c8; }
+
+        .card-green { border-top: 5px solid #52c58c; }
+        .card-green h2 { color: #20865b; }
+
+        .card-orange { border-top: 5px solid #f0b052; }
+        .card-orange h2 { color: #c17b20; }
+
+        .card-blue { border-top: 5px solid #65a9ed; }
+        .card-blue h2 { color: #337ac4; }
+
+        .pretty-panel {
+            padding: 28px;
+            background: white;
+            border: 1px solid #eeedf5;
+            border-radius: 22px;
+            box-shadow: 0 8px 25px #32285a0d;
+        }
+
+        .pretty-panel-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .pretty-panel-heading p {
+            color: #88849a;
+        }
+
+        .pretty-alert {
+            background: #fff0e8;
+            color: #bd5b35;
+            padding: 9px 13px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .pretty-table-scroll {
+            overflow-x: auto;
+        }
+
+        .pretty-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        .pretty-table th {
+            text-align: left;
+            padding: 16px;
+            color: #77718d;
+            background: #f7f5ff;
+            font-size: 12px;
+        }
+
+        .pretty-table td {
+            padding: 16px;
+            border-bottom: 1px solid #f0eef6;
+            color: #716d83;
+        }
+
+        .pretty-table tbody tr:hover {
+            background: #faf9ff;
+        }
+
+        .pretty-name {
+            font-weight: 700;
+            color: #30294f !important;
+        }
+
+        .pretty-status {
+            display: inline-block;
+            padding: 7px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .status-low {
+            background: #fff2d9;
+            color: #a9670e;
+        }
+
+        .status-out {
+            background: #ffe6e9;
+            color: #bb3d4b;
+        }
+
+        .pretty-empty {
+            text-align: center;
+            padding: 30px !important;
+        }
+
+        .pretty-view {
+            display: inline-block;
+            margin-top: 20px;
+            color: #7054c5;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        @media (max-width: 1000px) {
+            .pretty-stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 550px) {
+            main { width: 94%; }
+            .pretty-hero { padding: 22px; }
+            .pretty-stats { gap: 12px; }
+            .pretty-card { padding: 16px; }
+            .pretty-panel { padding: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2>Stationery Management System ✏️</h2>
+        <nav>
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'product_list' %}">Products</a>
+            <a href="{% url 'add_product' %}">Add Product</a>
+            <a href="{% url 'order_list' %}">Orders</a>
+            <a href="{% url 'add_order' %}">New Order</a>
+            <a href="/admin/">Admin</a>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

@@ -1,0 +1,109 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Stationery Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="pretty-dashboard">
+
+    <header class="pretty-hero">
+        <div>
+            <span class="pretty-label">STATIONERY STORE · ADMIN</span>
+            <h1>Welcome to your dashboard ✨</h1>
+            <p>Everything in your stationery store, at a glance.</p>
+        </div>
+        <a href="{% url 'add_product' %}" class="pretty-add">
+            + Add Product
+        </a>
+    </header>
+
+    <section class="pretty-stats">
+
+        <article class="pretty-card card-purple">
+            <div class="pretty-icon">📦</div>
+            <p>Total Products</p>
+            <h2>{{ total_products }}</h2>
+            <small>Products in your catalogue</small>
+        </article>
+
+        <article class="pretty-card card-green">
+            <div class="pretty-icon">₹</div>
+            <p>Total Stock Value</p>
+            <h2>₹{{ stock_value|floatformat:2 }}</h2>
+            <small>Price × available quantity</small>
+        </article>
+
+        <article class="pretty-card card-orange">
+            <div class="pretty-icon">⚠️</div>
+            <p>Low Stock Alerts</p>
+            <h2>{{ low_stock_count }}</h2>
+            <small>Five or fewer units remaining</small>
+        </article>
+
+        <article class="pretty-card card-blue">
+            <div class="pretty-icon">🗂️</div>
+            <p>Total Units</p>
+            <h2>{{ total_units }}</h2>
+            <small>Units across all products</small>
+        </article>
+
+    </section>
+
+    <section class="pretty-panel">
+        <div class="pretty-panel-heading">
+            <div>
+                <h2>Inventory attention</h2>
+                <p>Products that may need restocking</p>
+            </div>
+            <span class="pretty-alert">{{ low_stock_count }} alerts</span>
+        </div>
+
+        <div class="pretty-table-scroll">
+            <table class="pretty-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in low_stock_products %}
+                    <tr>
+                        <td class="pretty-name">{{ p.name }}</td>
+                        <td>{{ p.category }}</td>
+                        <td>₹{{ p.price }}</td>
+                        <td>{{ p.quantity }}</td>
+                        <td>
+                            {% if p.quantity == 0 %}
+                                <span class="pretty-status status-out">
+                                    Out of stock
+                                </span>
+                            {% else %}
+                                <span class="pretty-status status-low">
+                                    Low stock
+                                </span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="pretty-empty">
+                            🎉 Everything looks good! No low-stock products.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <a href="{% url 'product_list' %}" class="pretty-view">
+            View all products →
+        </a>
+    </section>
+
+</div>
+{% endblock %}

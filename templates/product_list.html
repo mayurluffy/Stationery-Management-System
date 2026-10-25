@@ -1,0 +1,56 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Stationery Store{% endblock %}
+
+{% block content %}
+<div class="shop-header">
+    <div>
+        <p class="eyebrow">YOUR CREATIVE CORNER</p>
+        <h1>Stationery Collection ✨</h1>
+        <p>Everything you need to write, create and organize.</p>
+    </div>
+    <a class="add-btn" href="{% url 'add_product' %}">
+        + Add Product
+    </a>
+</div>
+
+<div class="product-grid">
+    {% for p in products %}
+    <div class="product-card">
+        <div class="product-image-box">
+            <img
+                src="{% static 'images/' %}{{ p.image_filename|default:'pen.svg' }}"
+                alt="{{ p.name }}"
+                class="product-image"
+            >
+            <span class="category-badge">{{ p.category }}</span>
+        </div>
+
+        <div class="product-info">
+            <h3>{{ p.name }}</h3>
+            <p class="description">
+                {{ p.description|default:"A useful stationery essential." }}
+            </p>
+
+            <div class="price-stock">
+                <span class="price">₹{{ p.price }}</span>
+                <span class="stock">
+                    Stock: {{ p.quantity }}
+                </span>
+            </div>
+
+            <div class="card-actions">
+                <a class="edit-btn"
+                   href="{% url 'edit_product' p.pk %}">Edit</a>
+                <a class="delete-btn"
+                   href="{% url 'delete_product' p.pk %}">Delete</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>No products available yet. Add your first product!</p>
+    {% endfor %}
+</div>
+{% endblock %}
